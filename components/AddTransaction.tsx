@@ -86,7 +86,7 @@ export default function AddTransaction({
             <SegmentedControl
               values={["Expense", "Income"]}
               style={{ marginBottom: 15 }}
-              selectedIndex={0}
+              selectedIndex={currentTab}
               onChange={(event) => {
                 setCurrentTab(event.nativeEvent.selectedSegmentIndex);
               }}
