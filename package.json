@@ -4,8 +4,8 @@
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "web": "expo start --web"
   },
   "dependencies": {
@@ -14,9 +14,12 @@
     "@react-navigation/native-stack": "^6.9.18",
     "expo": "^50.0.7",
     "expo-asset": "~9.0.2",
+    "expo-blur": "~12.9.2",
     "expo-file-system": "~16.0.6",
     "expo-sqlite": "~13.2.2",
     "expo-status-bar": "~1.11.1",
+    "expo-symbols": "^0.1.4",
+    "expo-system-ui": "~2.9.4",
     "react": "18.2.0",
     "react-native": "0.73.4",
     "react-native-auto-size-text": "^1.1.1",
