@@ -1,12 +1,34 @@
 import * as React from "react";
-import { ScrollView, StyleSheet, Text, TextStyle, View } from "react-native";
+import {
+  Button,
+  Platform,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextStyle,
+  TouchableHighlight,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
 import { Category, Transaction, TransactionsByMonth } from "../types";
 import { useSQLiteContext } from "expo-sqlite/next";
 import TransactionList from "../components/TransactionsList";
 import Card from "../components/ui/Card";
 import AddTransaction from "../components/AddTransaction";
+import { BlurView } from "expo-blur";
+import { SymbolView } from "expo-symbols";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+
+type StackParamList = {
+  Payment: undefined;
+};
 
 export default function Home() {
+  const navigation =
+    useNavigation<NativeStackNavigationProp<StackParamList, "Payment">>();
   const [categories, setCategories] = React.useState<Category[]>([]);
   const [transactions, setTransactions] = React.useState<Transaction[]>([]);
   const [transactionsByMonth, setTransactionsByMonth] =
@@ -84,18 +106,64 @@ export default function Home() {
   }
 
   return (
-    <ScrollView contentContainerStyle={{ padding: 15, paddingVertical: 170 }}>
-      <AddTransaction insertTransaction={insertTransaction} />
-      <TransactionSummary
-        totalExpenses={transactionsByMonth.totalExpenses}
-        totalIncome={transactionsByMonth.totalIncome}
-      />
-      <TransactionList
-        categories={categories}
-        transactions={transactions}
-        deleteTransaction={deleteTransaction}
-      />
-    </ScrollView>
+    <>
+      <ScrollView
+        contentContainerStyle={{
+          padding: 15,
+          paddingVertical: Platform.OS === "ios" ? 170 : 16,
+        }}
+      >
+        <AddTransaction insertTransaction={insertTransaction} />
+        <TransactionSummary
+          totalExpenses={transactionsByMonth.totalExpenses}
+          totalIncome={transactionsByMonth.totalIncome}
+        />
+        <TransactionList
+          categories={categories}
+          transactions={transactions}
+          deleteTransaction={deleteTransaction}
+        />
+      </ScrollView>
+      <BlurView
+        experimentalBlurMethod="dimezisBlurView"
+        intensity={90}
+        tint={"light"}
+        style={styles.blur}
+      >
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <View>
+            <Text style={{ color: "gray" }}>Lifetime savings</Text>
+            <Text style={{ fontWeight: "bold", fontSize: 28 }}>
+              $123,823.50
+            </Text>
+          </View>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => navigation.navigate("Payment")}
+          >
+            <SymbolView
+              size={48}
+              type="palette"
+              name="checkmark.circle"
+              colors={["black", "transparent"]}
+              style={{ backgroundColor: "#00000010", borderRadius: 50 }}
+              fallback={
+                <Button
+                  title="open"
+                  onPress={() => navigation.navigate("Payment")}
+                />
+              }
+            />
+          </TouchableOpacity>
+        </View>
+      </BlurView>
+    </>
   );
 }
 
@@ -122,33 +190,43 @@ function TransactionSummary({
   };
 
   return (
-    <Card style={styles.container}>
-      <Text style={styles.periodTitle}>Summary for {readablePeriod}</Text>
-      <Text style={styles.summaryText}>
-        Income:{" "}
-        <Text style={getMoneyTextStyle(totalIncome)}>
-          {formatMoney(totalIncome)}
+    <>
+      <Card style={styles.container}>
+        <Text style={styles.periodTitle}>Summary for {readablePeriod}</Text>
+        <Text style={styles.summaryText}>
+          Income:{" "}
+          <Text style={getMoneyTextStyle(totalIncome)}>
+            {formatMoney(totalIncome)}
+          </Text>
         </Text>
-      </Text>
-      <Text style={styles.summaryText}>
-        Total Expenses:{" "}
-        <Text style={getMoneyTextStyle(totalExpenses)}>
-          {formatMoney(totalExpenses)}
+        <Text style={styles.summaryText}>
+          Total Expenses:{" "}
+          <Text style={getMoneyTextStyle(totalExpenses)}>
+            {formatMoney(totalExpenses)}
+          </Text>
         </Text>
-      </Text>
-      <Text style={styles.summaryText}>
-        Savings:{" "}
-        <Text style={getMoneyTextStyle(savings)}>{formatMoney(savings)}</Text>
-      </Text>
-    </Card>
+        <Text style={styles.summaryText}>
+          Savings:{" "}
+          <Text style={getMoneyTextStyle(savings)}>{formatMoney(savings)}</Text>
+        </Text>
+      </Card>
+    </>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 15,
+    marginBottom: 16,
     paddingBottom: 7,
-    // Add other container styles as necessary
+  },
+  blur: {
+    width: "100%",
+    height: 110,
+    position: "absolute",
+    bottom: 0,
+    borderTopWidth: 1,
+    borderTopColor: "#00000010",
+    padding: 16,
   },
   periodTitle: {
     fontSize: 20,

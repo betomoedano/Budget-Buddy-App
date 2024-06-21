@@ -1,11 +1,12 @@
 import * as React from "react";
 import { SQLiteProvider } from "expo-sqlite/next";
-import { ActivityIndicator, Text, View } from "react-native";
+import { ActivityIndicator, Platform, Text, View } from "react-native";
 import * as FileSystem from "expo-file-system";
 import { Asset } from "expo-asset";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 import Home from "./screens/Home";
+import Payment from "./screens/sheets/Payment";
 
 const Stack = createNativeStackNavigator();
 
@@ -59,6 +60,18 @@ export default function App() {
               options={{
                 headerTitle: "Budget Buddy",
                 headerLargeTitle: true,
+                headerTransparent: Platform.OS === "ios" ? true : false,
+                headerBlurEffect: "light",
+              }}
+            />
+            <Stack.Screen
+              name="Payment"
+              component={Payment}
+              options={{
+                presentation: "transparentModal",
+                animation: "slide_from_bottom",
+                animationTypeForReplace: "pop",
+                headerShown: false,
               }}
             />
           </Stack.Navigator>
