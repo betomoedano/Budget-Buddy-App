@@ -21,6 +21,7 @@ import { BlurView } from "expo-blur";
 import { SymbolView } from "expo-symbols";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import SummaryChart from "../components/SummaryChart";
 
 type StackParamList = {
   Payment: undefined;
@@ -47,7 +48,9 @@ export default function Home() {
 
   async function getData() {
     const result = await db.getAllAsync<Transaction>(
-      `SELECT * FROM Transactions ORDER BY date DESC;`
+      `SELECT * FROM Transactions 
+       ORDER BY date DESC
+       LIMIT 30;`
     );
     setTransactions(result);
 
@@ -113,7 +116,7 @@ export default function Home() {
           paddingVertical: Platform.OS === "ios" ? 170 : 16,
         }}
       >
-        <AddTransaction insertTransaction={insertTransaction} />
+        {/* <AddTransaction insertTransaction={insertTransaction} /> */}
         <TransactionSummary
           totalExpenses={transactionsByMonth.totalExpenses}
           totalIncome={transactionsByMonth.totalIncome}
@@ -192,8 +195,9 @@ function TransactionSummary({
   return (
     <>
       <Card style={styles.container}>
-        <Text style={styles.periodTitle}>Summary for {readablePeriod}</Text>
-        <Text style={styles.summaryText}>
+        {/* <Text style={styles.periodTitle}>Summary for {readablePeriod}</Text> */}
+        <SummaryChart />
+        {/* <Text style={styles.summaryText}>
           Income:{" "}
           <Text style={getMoneyTextStyle(totalIncome)}>
             {formatMoney(totalIncome)}
@@ -208,7 +212,7 @@ function TransactionSummary({
         <Text style={styles.summaryText}>
           Savings:{" "}
           <Text style={getMoneyTextStyle(savings)}>{formatMoney(savings)}</Text>
-        </Text>
+        </Text> */}
       </Card>
     </>
   );
