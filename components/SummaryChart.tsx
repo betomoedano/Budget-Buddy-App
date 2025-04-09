@@ -1,6 +1,6 @@
 import SegmentedControl from "@react-native-segmented-control/segmented-control";
 import * as React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View, Platform } from "react-native";
 import { BarChart, barDataItem } from "react-native-gifted-charts";
 import { useSQLiteContext } from "expo-sqlite";
 import { processWeeklyData } from "../queries/ChartQuery";
@@ -38,11 +38,13 @@ export default function SummaryChart() {
   }, [chartPeriod, currentDate, transactionType]);
 
   const getWeekRange = (date: Date) => {
-    const startOfWeek = new Date(date.setDate(date.getDate() - date.getDay()));
-    const endOfWeek = new Date(date.setDate(startOfWeek.getDate() + 6));
+    const startOfWeek = new Date(date);
+    startOfWeek.setDate(date.getDate() - date.getDay());
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(startOfWeek.getDate() + 6);
     return {
-      startDate: Math.floor(startOfWeek.getTime()),
-      endDate: Math.floor(endOfWeek.getTime()),
+      startDate: Math.floor(startOfWeek.getTime() / 1000), // Convert to seconds
+      endDate: Math.floor(endOfWeek.getTime() / 1000), // Convert to seconds
     };
   };
 
@@ -67,7 +69,7 @@ export default function SummaryChart() {
     try {
       const query = `
       SELECT 
-        strftime('%w', date / 1000, 'unixepoch') AS day_of_week,
+        strftime('%w', date, 'unixepoch') AS day_of_week,
         SUM(amount) as total 
       FROM Transactions 
       WHERE date >= ? AND date <= ? AND type = ? 
