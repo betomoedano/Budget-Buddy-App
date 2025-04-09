@@ -58,7 +58,7 @@ function TransactionInfo({
       <Text style={{ fontSize: 16, fontWeight: "bold" }}>{description}</Text>
       <Text>Transaction number {id}</Text>
       <Text style={{ fontSize: 12, color: "gray" }}>
-        {new Date(date).toDateString()}
+        {new Date(date * 1000).toLocaleString()}
       </Text>
     </View>
   );

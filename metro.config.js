@@ -1,12 +1,14 @@
+// Learn more https://docs.expo.io/guides/customizing-metro
 const { getDefaultConfig } = require("expo/metro-config");
 
-const defaultConfig = getDefaultConfig(__dirname);
+/** @type {import('expo/metro-config').MetroConfig} */
+const config = getDefaultConfig(__dirname);
 
 // Add wasm asset support
-defaultConfig.resolver.assetExts.push("wasm");
+config.resolver.assetExts.push("wasm");
 
 // Add COEP and COOP headers to support SharedArrayBuffer
-defaultConfig.server.enhanceMiddleware = (middleware) => {
+config.server.enhanceMiddleware = (middleware) => {
   return (req, res, next) => {
     res.setHeader("Cross-Origin-Embedder-Policy", "credentialless");
     res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
@@ -14,4 +16,4 @@ defaultConfig.server.enhanceMiddleware = (middleware) => {
   };
 };
 
-module.exports = defaultConfig;
+module.exports = config;

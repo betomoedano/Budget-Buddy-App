@@ -20,16 +20,10 @@ import AddTransaction from "../components/AddTransaction";
 import { BlurView } from "expo-blur";
 import { SymbolView } from "expo-symbols";
 import { useNavigation } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import SummaryChart from "../components/SummaryChart";
 
-type StackParamList = {
-  Payment: undefined;
-};
-
 export default function Home() {
-  const navigation =
-    useNavigation<NativeStackNavigationProp<StackParamList, "Payment">>();
+  const navigation = useNavigation();
   const [categories, setCategories] = React.useState<Category[]>([]);
   const [transactions, setTransactions] = React.useState<Transaction[]>([]);
   const [transactionsByMonth, setTransactionsByMonth] =
@@ -49,8 +43,8 @@ export default function Home() {
   async function getData() {
     const result = await db.getAllAsync<Transaction>(
       `SELECT * FROM Transactions 
-       ORDER BY date DESC
-       LIMIT 30;`
+       ORDER BY date DESC 
+       LIMIT 10;`
     );
     setTransactions(result);
 
@@ -81,6 +75,13 @@ export default function Home() {
       [startOfMonthTimestamp, endOfMonthTimestamp]
     );
     setTransactionsByMonth(transactionsByMonth[0]);
+  }
+
+  async function deleteAllTransactions() {
+    db.withTransactionAsync(async () => {
+      await db.runAsync(`DELETE FROM Transactions;`);
+      await getData();
+    });
   }
 
   async function deleteTransaction(id: number) {
@@ -116,7 +117,11 @@ export default function Home() {
           paddingVertical: Platform.OS === "ios" ? 170 : 16,
         }}
       >
-        {/* <AddTransaction insertTransaction={insertTransaction} /> */}
+        <AddTransaction insertTransaction={insertTransaction} />
+        <Button
+          title="Delete All Transactions"
+          onPress={deleteAllTransactions}
+        />
         <TransactionSummary
           totalExpenses={transactionsByMonth.totalExpenses}
           totalIncome={transactionsByMonth.totalIncome}
@@ -127,7 +132,7 @@ export default function Home() {
           deleteTransaction={deleteTransaction}
         />
       </ScrollView>
-      <BlurView
+      {/* <BlurView
         experimentalBlurMethod="dimezisBlurView"
         intensity={90}
         tint={"light"}
@@ -165,7 +170,7 @@ export default function Home() {
             />
           </TouchableOpacity>
         </View>
-      </BlurView>
+      </BlurView> */}
     </>
   );
 }
