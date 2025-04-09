@@ -13,7 +13,7 @@ import {
   View,
 } from "react-native";
 import { Category, Transaction, TransactionsByMonth } from "../types";
-import { useSQLiteContext } from "expo-sqlite/next";
+import { useSQLiteContext } from "expo-sqlite";
 import TransactionList from "../components/TransactionsList";
 import Card from "../components/ui/Card";
 import AddTransaction from "../components/AddTransaction";

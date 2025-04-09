@@ -2,7 +2,7 @@ import SegmentedControl from "@react-native-segmented-control/segmented-control"
 import * as React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { BarChart, barDataItem } from "react-native-gifted-charts";
-import { useSQLiteContext } from "expo-sqlite/next";
+import { useSQLiteContext } from "expo-sqlite";
 import { processWeeklyData } from "../queries/ChartQuery";
 import { SymbolView } from "expo-symbols";
 
