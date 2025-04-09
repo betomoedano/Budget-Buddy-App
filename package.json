@@ -15,6 +15,7 @@
     "expo": "^53.0.0-canary-20250408-7f0ab53",
     "expo-asset": "11.1.1-canary-20250408-7f0ab53",
     "expo-blur": "14.1.1-canary-20250408-7f0ab53",
+    "expo-dev-client": "5.1.1-canary-20250408-7f0ab53",
     "expo-file-system": "18.1.1-canary-20250408-7f0ab53",
     "expo-linear-gradient": "14.1.1-canary-20250408-7f0ab53",
     "expo-sqlite": "15.2.1-canary-20250408-7f0ab53",

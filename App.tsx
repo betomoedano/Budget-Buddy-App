@@ -52,7 +52,13 @@ export default function App() {
           </View>
         }
       >
-        <SQLiteProvider databaseName="mySQLiteDB.db" useSuspense>
+        <SQLiteProvider
+          databaseName="mySQLiteDB.db"
+          useSuspense
+          assetSource={{
+            assetId: require("./assets/mySQLiteDB.db"),
+          }}
+        >
           <Stack.Navigator>
             <Stack.Screen
               name="Home"
