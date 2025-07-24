@@ -3,7 +3,7 @@ import { Button, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import Card from "./ui/Card";
 import SegmentedControl from "@react-native-segmented-control/segmented-control";
-import { useSQLiteContext } from "expo-sqlite/next";
+import { useSQLiteContext } from "expo-sqlite";
 import { Category, Transaction } from "../types";
 
 export default function AddTransaction({

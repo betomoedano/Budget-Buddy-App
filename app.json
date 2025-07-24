@@ -11,7 +11,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.betomoedano.BudgetBuddy"
@@ -24,7 +24,8 @@
       "package": "com.betomoedano.BudgetBuddy"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
-    }
+      "bundler": "metro"
+    },
+    "plugins": ["expo-asset", "expo-sqlite"]
   }
 }
